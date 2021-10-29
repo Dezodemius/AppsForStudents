@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Calculator
 {
@@ -14,7 +13,7 @@ namespace Calculator
     /// <param name="args">Аргументы командной строки.</param>
     public static void Main(string[] args)
     {
-      StringParseCalc();
+      CalcSimply();
     }
 
     private static void CalcSimply()
@@ -22,6 +21,8 @@ namespace Calculator
       double result;
       while (true)
       {
+        var a = "dawdaw";
+        Console.WriteLine(a[2]);
         Console.Write("a: ");
         var leftNumber = double.Parse(Console.ReadLine());
 
@@ -44,37 +45,6 @@ namespace Calculator
         }
         Console.WriteLine(result);
 
-      }
-    }
-
-    private static void StringParseCalc()
-    {
-      double leftNumber;
-      double rightNumber;
-      string action;
-
-      var userInput = Console.ReadLine().Split(" ");
-      leftNumber = double.Parse(userInput[0]);
-      action = userInput[1];
-      rightNumber = double.Parse(userInput[2]);
-
-      switch (action)
-      {
-        case "+":
-          Console.WriteLine(leftNumber + rightNumber);
-          break;       
-        case "-":
-          Console.WriteLine(leftNumber - rightNumber);
-          break;        
-        case "/":
-          Console.WriteLine(leftNumber / rightNumber);
-          break;        
-        case "*":
-          Console.WriteLine(leftNumber * rightNumber);
-          break;
-        default:
-          Console.WriteLine("хз чё делать");
-          break;
       }
     }
   }
