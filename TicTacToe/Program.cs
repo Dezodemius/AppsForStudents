@@ -86,35 +86,25 @@ namespace TicTacToe
     /// </summary>
     private static void PlayWithHuman()
     {
-      string firstPlayer = Crosses;
-      string secondPlayer = Noughts;
-      Console.Write($"\nКто будет играть '{Crosses}'? [1/2] ");
-      var choose = Console.ReadKey().KeyChar;
-      if (choose == '2')
-      {
-        firstPlayer = Noughts;
-        secondPlayer = Crosses;
-      }
-
       while (true)
       {
         var currentBoard = defaultBoard;
         var winningCombination = Array.Empty<int>();
         ShowBoard(currentBoard);
-        MakeMove(firstPlayer, ref currentBoard);
-        if (CheckWin(currentBoard, firstPlayer, out winningCombination))
+        MakeMove(currentBoard, Crosses);
+        if (CheckWin(currentBoard, Crosses, out winningCombination))
         {
           ShowWinningCombinationOnBoard(currentBoard, winningCombination);
-          Console.WriteLine($"\nПобеда '{firstPlayer}'");
+          Console.WriteLine($"\nПобеда '{Crosses}'");
           break;
         }
 
         ShowBoard(currentBoard);
-        MakeMove(secondPlayer, ref currentBoard);
-        if (CheckWin(currentBoard, secondPlayer, out winningCombination))
+        MakeMove(currentBoard, Noughts);
+        if (CheckWin(currentBoard, Noughts, out winningCombination))
         {
           ShowWinningCombinationOnBoard(currentBoard, winningCombination);
-          Console.WriteLine($"\nПобеда '{secondPlayer}'");
+          Console.WriteLine($"\nПобеда '{Noughts}'");
           break;
         }
 
@@ -133,7 +123,7 @@ namespace TicTacToe
     /// <param name="player">Символ игрока чей ход.</param>
     /// <param name="winningCombination">Победная комбинация.</param>
     /// <returns><c>True</c>, если ход привёл к победе.</returns>
-    private static bool CheckWin(string[] board, string player, out int[] winningCombination)
+    private static bool CheckWin(IReadOnlyList<string> board, string player, out int[] winningCombination)
     {
       winningCombination = Array.Empty<int>();
       foreach (var combination in allWinningCombinations)
@@ -154,7 +144,7 @@ namespace TicTacToe
     /// <param name="winningCombination">Победная комбинация.</param>
     /// <param name="winningSign">Символ, который должен привести к победе.</param>
     /// <returns><c>True</c>, если текущая комбинация является победной.</returns>
-    private static bool IsWinningCombination(string[] board, int[] winningCombination, string winningSign)
+    private static bool IsWinningCombination(IReadOnlyList<string> board, int[] winningCombination, string winningSign)
     {
       foreach (var combinationElement in winningCombination)
       {
@@ -169,9 +159,9 @@ namespace TicTacToe
     /// <summary>
     /// Сделать ход.
     /// </summary>
-    /// <param name="playerSign">Символ игрока.</param>
     /// <param name="board">Доска.</param>
-    private static void MakeMove(string playerSign, ref string[] board)
+    /// <param name="playerSign">Символ игрока.</param>
+    private static void MakeMove(string[] board, string playerSign)
     {
       var isMoveCorrect = false;
       while (!isMoveCorrect)
@@ -196,7 +186,84 @@ namespace TicTacToe
     /// <exception cref="NotImplementedException"></exception>
     private static void PlayWithCPU()
     {
-      throw new NotImplementedException();
+      Console.Write("\nКомпуктер будет ходить первым? [y] ");
+      var choose = Console.ReadKey();
+      bool cpuFirst = choose.Key == ConsoleKey.Y;
+
+      while (true)
+      {
+        var currentBoard = defaultBoard;
+        var winningCombination = Array.Empty<int>();
+
+        string currentMoveSymbol;
+        if (cpuFirst)
+        {
+          currentMoveSymbol = Crosses;
+          MakeCPUMove(currentBoard, currentMoveSymbol);
+        }
+        else
+        {
+          ShowBoard(currentBoard);
+          currentMoveSymbol = Crosses;
+          MakeMove(currentBoard, currentMoveSymbol);
+        }
+        if (CheckWin(currentBoard, currentMoveSymbol, out winningCombination))
+        {
+          ShowWinningCombinationOnBoard(currentBoard, winningCombination);
+          Console.WriteLine($"\nПобеда '{currentMoveSymbol}'");
+          break;
+        }
+
+        if (cpuFirst)
+        {
+          ShowBoard(currentBoard);
+          currentMoveSymbol = Noughts;
+          MakeMove(currentBoard, currentMoveSymbol);
+        }
+        else
+        {
+          currentMoveSymbol = Noughts;
+          MakeCPUMove(currentBoard, currentMoveSymbol);
+        }
+        if (CheckWin(currentBoard, currentMoveSymbol, out winningCombination))
+        {
+          ShowWinningCombinationOnBoard(currentBoard, winningCombination);
+          Console.WriteLine($"\nПобеда '{currentMoveSymbol}'");
+          break;
+        }
+
+        if (currentBoard.All(i => i != EmptyCell))
+        {
+          Console.WriteLine("Ничья!");
+          break;
+        }
+      }
+    }
+
+    private static void MakeCPUMove(string[] board, string symbol)
+    {
+      var rand = new Random();
+      List<int> availableMoves = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 }
+        .Where(i => board[i] == EmptyCell)
+        .ToList();
+      availableMoves = availableMoves
+        .OrderBy(i => rand.Next(availableMoves.Count()))
+        .ToList();
+      foreach (var move in availableMoves)
+      {
+        var boardCopy = new List<string>(board)
+        {
+            [move] = symbol
+        };
+        if (CheckWin(boardCopy, symbol, out _))
+        {
+          board[move] = symbol;
+          return;
+        }
+      }
+
+      var randomMove = availableMoves[rand.Next(availableMoves.Count)];
+      board[randomMove] = symbol;
     }
     
     /// <summary>
