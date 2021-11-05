@@ -168,7 +168,9 @@ namespace TicTacToe
       {
         Console.Write($"\nХод {playerSign}: ");
         var move = Console.ReadKey().KeyChar.ToString();
-        if (int.TryParse(move, out var i) && board[i - 1] == " ")
+        if (int.TryParse(move, out var i) && 
+            i > 0 && 
+            board[i - 1] == " ")
         {
           board[i - 1] = playerSign;
           isMoveCorrect = true;
@@ -214,6 +216,12 @@ namespace TicTacToe
           break;
         }
 
+        if (currentBoard.All(i => i != EmptyCell))
+        {
+          Console.WriteLine("Ничья!");
+          break;
+        }
+
         if (cpuFirst)
         {
           ShowBoard(currentBoard);
@@ -240,6 +248,11 @@ namespace TicTacToe
       }
     }
 
+    /// <summary>
+    /// Сделать ход компьютера.
+    /// </summary>
+    /// <param name="board">Доска для игры.</param>
+    /// <param name="symbol">Символ компьютера.</param>
     private static void MakeCPUMove(string[] board, string symbol)
     {
       var rand = new Random();
@@ -247,7 +260,7 @@ namespace TicTacToe
         .Where(i => board[i] == EmptyCell)
         .ToList();
       availableMoves = availableMoves
-        .OrderBy(i => rand.Next(availableMoves.Count()))
+        .OrderBy(i => rand.Next(availableMoves.Count))
         .ToList();
       foreach (var move in availableMoves)
       {
@@ -300,11 +313,11 @@ namespace TicTacToe
     /// </summary>
     /// <param name="board">Доска для игры.</param>
     /// <param name="winningCombination">Победная комбинация.</param>
-    private static void ShowWinningCombinationOnBoard(string[] board, int[] winningCombination)
+    private static void ShowWinningCombinationOnBoard(IReadOnlyList<string> board, int[] winningCombination)
     {
       Console.WriteLine();
       Console.WriteLine("-------------");
-      for (var i = 1; i <= board.Length; i++)
+      for (var i = 1; i <= board.Count; i++)
       {
         if (board[i - 1] == EmptyCell)
           Console.Write($"| {i} ");
@@ -329,7 +342,7 @@ namespace TicTacToe
           Console.Write(" ");
         }
         
-        if (i % Math.Sqrt(board.Length) == 0)
+        if (i % Math.Sqrt(board.Count) == 0)
         {
           Console.WriteLine("|");
           Console.WriteLine("-------------");
