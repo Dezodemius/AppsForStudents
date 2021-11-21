@@ -33,18 +33,16 @@ namespace Calculator
 
         switch (action)
         {
-         case ConsoleKey.Add:
-           result = leftNumber + rightNumber;
-           break;
-         case ConsoleKey.Subtract:
-           result = leftNumber - rightNumber;
-           break;
-         default:
-           result = -1;
-           break;
+          case ConsoleKey.Add:
+            result = leftNumber + rightNumber;
+            break;
+          case ConsoleKey.Subtract:
+            result = leftNumber - rightNumber;
+            break;
+          default:
+            result = -1;
+            break;
         }
-        Console.WriteLine(result);
-
       }
     }
   }
