@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe", "TicTacToe\TicT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigReader", "ConfigReader\ConfigReader.csproj", "{57A2F870-772B-4830-9DC1-C2E724B3DB47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jukebox", "Jukebox\Jukebox.csproj", "{AC294394-1904-45CF-9711-CD736491C24B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{57A2F870-772B-4830-9DC1-C2E724B3DB47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A2F870-772B-4830-9DC1-C2E724B3DB47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A2F870-772B-4830-9DC1-C2E724B3DB47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC294394-1904-45CF-9711-CD736491C24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC294394-1904-45CF-9711-CD736491C24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC294394-1904-45CF-9711-CD736491C24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC294394-1904-45CF-9711-CD736491C24B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
